@@ -13,7 +13,7 @@ main(int argc, char *argv[])
   }
 
   // your code to print the time in any format you like...
-  printf("Just a test\n");
+  printf(1, "Just a test\n");
 
   exit();
 }
