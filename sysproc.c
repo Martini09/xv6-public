@@ -95,7 +95,6 @@ int
 sys_date(void)
 {
   struct rtcdate *date;
-  // ??? i-th arg
   if (argptr(0, (void *) &date, sizeof(struct rtcdate*)) < 0)
     return -1;
   cmostime(date); 
