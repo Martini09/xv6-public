@@ -92,9 +92,13 @@ sys_uptime(void)
 
 // print current UTC date
 int 
-sys_date()
+sys_date(void)
 {
-  cprintf("This is date\n");  
+  struct rtcdate *date;
+  // ??? i-th arg
+  if (argptr(0, (void *) &date, sizeof(struct rtcdate*)) < 0)
+    return -1;
+  cmostime(date); 
   return 0;
 }
 
