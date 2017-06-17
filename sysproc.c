@@ -89,3 +89,14 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// print current UTC date
+int 
+sys_date()
+{
+  cprintf("This is date\n");  
+  return 0;
+}
+
+
+
