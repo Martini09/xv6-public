@@ -14,6 +14,9 @@ extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 struct spinlock tickslock;
 uint ticks;
 
+// Add declaration for mappages
+int mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm);
+
 void
 tvinit(void)
 {
@@ -86,6 +89,32 @@ trap(struct trapframe *tf)
               tf->trapno, cpunum(), tf->eip, rcr2());
       panic("trap");
     }
+
+    // Map a newly-allocated page of physical memory at the faulting address
+    if(tf->trapno == T_PGFLT){   // Make sure error is page fault
+      pde_t *pgdir = proc->pgdir;
+      uint old = proc->sz;
+      uint newsz = PGROUNDUP(tf->eip);
+      uint a = PGROUNDUP(oldsz);
+
+      for(; a < newsz; a += PGSIZE){
+        mem = kalloc();
+        if(mem == 0){
+          cprintf("allocuvm out of memory\n");
+          deallocuvm(pgdir, newsz, oldsz);
+          return;
+        }
+        memset(mem, 0, PGSIZE);
+        if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
+          cprintf("allocuvm out of memory (2)\n");
+          deallocuvm(pgdir, newsz, oldsz);
+          kfree(mem);
+          return;
+        }
+      }
+    }
+    return;
+
     // In user space, assume process misbehaved.
     cprintf("pid %d %s: trap %d err %d on cpu %d "
             "eip 0x%x addr 0x%x--kill proc\n",
