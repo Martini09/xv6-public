@@ -99,8 +99,8 @@ trap(struct trapframe *tf)
       uint a = oldsz;
       char *mem;
 
-      cprintf("start size: 0x%x, falut addr: 0x%x, end size: 0x%x\n", 
-              oldsz, rcr2(), newsz);
+      // cprintf("start size: 0x%x, falut addr: 0x%x, end size: 0x%x\n", 
+      //         oldsz, rcr2(), newsz);
 
       for(; a < newsz; a += PGSIZE){
         mem = kalloc();
