@@ -94,29 +94,30 @@ trap(struct trapframe *tf)
     if(tf->trapno == T_PGFLT){   // Make sure error is page fault
       pde_t *pgdir = proc->pgdir;
       uint oldsz = proc->sz;
-      uint newsz = PGROUNDDOWN(tf->eip);
+      uint newsz = PGROUNDUP(tf->eip);
       uint a = PGROUNDUP(oldsz);
       char *mem;
 
-      cprintf("old size: %x, new size: %x\n", oldsz, newsz);
+      cprintf("old size: 0x%x, falut addr: 0x%x, new size: 0x%x\n", 
+              oldsz, tf->eip, newsz);
 
       for(; a < newsz; a += PGSIZE){
         mem = kalloc();
         if(mem == 0){
           cprintf("allocuvm out of memory\n");
           deallocuvm(pgdir, newsz, oldsz);
-          return;
+          break;
         }
         memset(mem, 0, PGSIZE);
         if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
           cprintf("allocuvm out of memory (2)\n");
           deallocuvm(pgdir, newsz, oldsz);
           kfree(mem);
-          return;
+          break;
         }
       }
     }
-    return;
+    break;
 
     // In user space, assume process misbehaved.
     cprintf("pid %d %s: trap %d err %d on cpu %d "
