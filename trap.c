@@ -98,7 +98,7 @@ trap(struct trapframe *tf)
       uint a = PGROUNDUP(oldsz);
       char *mem;
 
-      cprintf("Hello\n");
+      cprintf("old size: %x, new size: %x\n", oldsz, newsz);
 
       for(; a < newsz; a += PGSIZE){
         mem = kalloc();
