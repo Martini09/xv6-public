@@ -95,7 +95,7 @@ trap(struct trapframe *tf)
       pde_t *pgdir = proc->pgdir;
       uint fault_addr = rcr2();
       uint oldsz = PGROUNDDOWN(fault_addr);
-      uint newsz = PGROUNDDOWN(fault_addr);
+      uint newsz = PGROUNDUP(fault_addr);
       uint a = oldsz;
       char *mem;
 
