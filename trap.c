@@ -94,9 +94,11 @@ trap(struct trapframe *tf)
     if(tf->trapno == T_PGFLT){   // Make sure error is page fault
       pde_t *pgdir = proc->pgdir;
       uint oldsz = proc->sz;
-      uint newsz = PGROUNDUP(tf->eip);
+      uint newsz = PGROUNDDOWN(tf->eip);
       uint a = PGROUNDUP(oldsz);
       char *mem;
+
+      cprintf("Hello\n");
 
       for(; a < newsz; a += PGSIZE){
         mem = kalloc();
