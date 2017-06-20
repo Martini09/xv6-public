@@ -96,6 +96,7 @@ trap(struct trapframe *tf)
       uint oldsz = proc->sz;
       uint newsz = PGROUNDUP(tf->eip);
       uint a = PGROUNDUP(oldsz);
+      char *mem;
 
       for(; a < newsz; a += PGSIZE){
         mem = kalloc();
