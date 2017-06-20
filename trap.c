@@ -93,7 +93,7 @@ trap(struct trapframe *tf)
     // Map a newly-allocated page of physical memory at the faulting address
     if(tf->trapno == T_PGFLT){   // Make sure error is page fault
       pde_t *pgdir = proc->pgdir;
-      uint old = proc->sz;
+      uint oldsz = proc->sz;
       uint newsz = PGROUNDUP(tf->eip);
       uint a = PGROUNDUP(oldsz);
 
