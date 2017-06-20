@@ -93,12 +93,13 @@ trap(struct trapframe *tf)
     // Map a newly-allocated page of physical memory at the faulting address
     if(tf->trapno == T_PGFLT){   // Make sure error is page fault
       pde_t *pgdir = proc->pgdir;
-      uint oldsz = proc->sz;
-      uint newsz = PGROUNDDOWN(rcr2());
-      uint a = PGROUNDUP(oldsz);
+      uint fault_addr = rcr2();
+      uint oldsz = PGROUNDDOWN(fault_addr);
+      uint newsz = PGROUNDDOWN(fault_addr);
+      uint a = oldsz;
       char *mem;
 
-      cprintf("old size: 0x%x, falut addr: 0x%x, new size: 0x%x\n", 
+      cprintf("start size: 0x%x, falut addr: 0x%x, end size: 0x%x\n", 
               oldsz, rcr2(), newsz);
 
       for(; a < newsz; a += PGSIZE){
