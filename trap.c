@@ -63,7 +63,6 @@ trap(struct trapframe *tf)
       proc->cur_ticks ++;
       if (proc->cur_ticks == proc->alarmticks) {
         proc->cur_ticks = 0;
-        // function calling stack
         tf->esp -= 4;
         *((uint *) tf->esp) = tf->eip;
         tf->eip = (uint) proc->alarmhandler;
