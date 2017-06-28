@@ -60,9 +60,11 @@ trap(struct trapframe *tf)
 
     // alarm system call
     if (proc && (tf->cs & 3) == 3) {
-      cprintf("running process!\n");
-
       proc->cur_ticks ++;
+
+      cprintf("current ticks: %d, period: %d\n", 
+              proc->cur_ticks, proc->alarmticks);
+
       if (proc->cur_ticks == proc->alarmticks) {
         proc->cur_ticks = 0;
         // function calling stack
