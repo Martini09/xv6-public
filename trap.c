@@ -57,8 +57,11 @@ trap(struct trapframe *tf)
       wakeup(&ticks);
       release(&tickslock);
     }
+
     // alarm system call
     if (proc && (tf->cs & 3) == 3) {
+      cprintf("running process!\n");
+
       proc->cur_ticks ++;
       if (proc->cur_ticks == proc->alarmticks) {
         proc->cur_ticks = 0;
