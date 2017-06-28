@@ -66,6 +66,8 @@ trap(struct trapframe *tf)
         tf->esp -= 4;
         *((uint *) tf->esp) = tf->eip;
         tf->eip = (uint) proc->alarmhandler;
+
+        printf(1, "go somewhere!\n");
       }
     }
 
