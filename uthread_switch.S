@@ -7,4 +7,19 @@
 	.globl thread_switch
 thread_switch:
 	/* YOUR CODE HERE */
+  # Save current_thread
+  pushal
+  movl current_thread, %eax
+  movl %esp, (%eax)
+
+  # Restore next_thread
+  popal
+  move next_thread, %esp
+
+  # Set current_thread = next_thread, next_thread = 0
+  leal current_thread, %eax
+  movl next_thread, (%eax)
+  leal next_thread, %eax
+  movl 0x0, (%eax)
+
 	ret				/* pop return address from stack */

@@ -65,7 +65,6 @@ thread_schedule(void)
   } else
     next_thread = 0;
 
-  printf(1, "current: 0x%x, next: 0x%x\n", current_thread, next_thread);
 }
 
 void 
