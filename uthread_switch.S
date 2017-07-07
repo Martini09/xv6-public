@@ -16,9 +16,9 @@ thread_switch:
   leal current_thread, %eax
   movl next_thread, %ecx
   movl %ecx, (%eax)
-  
+
   leal next_thread, %eax
-  movl 0x0, (%eax)
+  movl $0, (%eax)
 
   # Restore next_thread
   popal
