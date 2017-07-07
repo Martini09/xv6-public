@@ -91,8 +91,6 @@ thread_yield(void)
 static void 
 mythread(void)
 {
-  printf(1, "enter mythread\n");
-  
   int i;
   printf(1, "my thread running\n");
   for (i = 0; i < 100; i++) {
