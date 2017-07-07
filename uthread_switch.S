@@ -14,7 +14,7 @@ thread_switch:
 
   # Restore next_thread
   popal
-  move next_thread, %esp
+  movl next_thread, %esp
 
   # Set current_thread = next_thread, next_thread = 0
   leal current_thread, %eax
